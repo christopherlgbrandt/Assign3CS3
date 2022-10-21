@@ -33,3 +33,18 @@ void file::associate(char filename[])
 {
 	
 }
+
+void file::write(char filename[])
+{
+
+}
+		
+void file::print(char filename[])
+{
+
+}
+
+void file::reverse(char filename[])
+{
+
+}

@@ -4,7 +4,7 @@ CXXFLAGS = -c -g -Wall -std=c++17
 
 PROGRAM = main
 
-CPPFILES = main.cpp, file.cpp
+CPPFILES = main.cpp file.cpp
 
 all:
 	$(CXX) $(CXXFLAGS) $(CPPFILES)

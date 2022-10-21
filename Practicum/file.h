@@ -13,6 +13,9 @@ class file{
 
 		file(char filename[]);
 		void associate(char filename[]);
+		void write(char filename[]);
+		void print(char filename[]);
+		void reverse(char filename[]);
 
 	private:
 		char* buffer;
