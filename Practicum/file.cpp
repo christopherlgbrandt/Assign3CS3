@@ -23,7 +23,7 @@ file::file()
 
 file::file(char filename[])
 {
-	
+	fileName = filename;
 }
 
 // associated method takes a file, seeks to end, allocates memory on heap then copies
@@ -36,7 +36,16 @@ void file::associate(char filename[])
 
 void file::write(char filename[])
 {
-
+	ifstream fin;
+	ofstream fout;
+	string fileInfo;
+	fin.open(fileName);
+	fout.open("newFile.txt");
+	while (!fin.eof())
+	{
+		fin >> fileInfo;
+		fout << fileInfo;
+	}
 }
 		
 void file::print(char filename[])

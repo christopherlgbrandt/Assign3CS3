@@ -30,16 +30,16 @@ int main()
 	file f1("dataset.txt");
 	
 	cout << "Printing without skipping (forward) " << endl;
-	f1.print(0);
+	//f1.print(0);
 
 	cout << "Printing without skipping (reverse) " << endl;
-	f1.reverse(0);
+	//f1.reverse(0);
 
 	cout << "Printing with 1 skip (forward) " << endl;
-	f1.print(1);
+	//f1.print(1);
 
 	cout << "Printing with 1 skip (reverse) " << endl;
-	f1.reverse(1);
+	//f1.reverse(1);
 
 	f1.write("dataset2.txt");
 

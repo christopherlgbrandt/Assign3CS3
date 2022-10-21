@@ -19,7 +19,7 @@ class file{
 
 	private:
 		char* buffer;
-
+		char* fileName[];
 };
 
 #endif FILE
