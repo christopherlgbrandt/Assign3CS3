@@ -33,6 +33,29 @@ int main() {
         getline(std::cin, pattern);
 
 
+
+
+        // Karp Rabin
+        cout << "Karp Rabin: ";
+        cout << "Number of occurrences in the text is: " << xxxx << " - ";
+        cout << "Number of Comparisons: " << xxxx << " - ";
+        cout << "Time: " << xxxx << "milliseconds" << " - ";
+        cout << "Number of spurious hits: " << xxxx << endl;
+
+        // Horspool
+        cout << "Horspool: ";
+        cout << "Number of occurrences in the text is: " << xxxx << " - ";
+        cout << "Number of Comparisons: " << xxxx << " - ";
+        cout << "Time: " << xxxx << "milliseconds" << " - ";
+
+        // KMP
+        cout << "KMP: ";
+        cout << "Number of occurrences in the text is: " << xxxx << " - ";
+        cout << "Number of Comparisons: " << xxxx << " - ";
+        cout << "Time: " << xxxx << "milliseconds" << " - ";
+
+
+
     }
 
     if (command == "Q"){
