@@ -16,7 +16,7 @@ int main() {
     cout << "Press S for search or Q for quit" << endl;
     getline(std::cin, command);
 
-    if (command == "S"){
+    while (command == "S"){
 
         cout << "Please specify input text file name: ";
         getline(std::cin, filename);
@@ -32,7 +32,7 @@ int main() {
         auto diff = std::chrono::high_resolution_clock::now() - start;
         auto t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
         cout << "Text read! Time to read: " << t1.count()  << " nanoseconds" << endl;
-        
+
         cout << "Please specify pattern to search for: ";
         getline(std::cin, pattern);
 
@@ -58,16 +58,14 @@ int main() {
 
 
         */
-    }
 
-    if (command == "Q"){
+        cout << "Press S to search for another word, or Q to quit: ";
+        getline(std::cin, command);
+
+        if (command == "Q"){
         cout << "Goodbye.";
         return 0;
-    }
-
-    else {
-        cout << "Neither an S or a Q. Goodbye.";
-        return 0;
+        }
     }
 
     return 0;
