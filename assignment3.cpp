@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -10,79 +8,7 @@ using namespace std;
 using namespace std::chrono; 
 
 ifstream file;
-string command, filename, pattern, file_contents;
 
-int main() {
-
-    cout << "Press S for search or Q for quit" << endl;
-    getline(std::cin, command);
-
-    while (command == "S"){
-
-        cout << "Please specify input text file name: ";
-        getline(std::cin, filename);
-
-        // read the file and time it
-        auto start = std::chrono::high_resolution_clock::now();
-        file.open(filename);
-        if (file.is_open()){
-            stringstream buffer;
-            buffer << file.rdbuf();
-            file_contents = buffer.str();
-        }
-        auto diff = std::chrono::high_resolution_clock::now() - start;
-        auto t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
-        cout << "Text read! Time to read: " << t1.count()  << " nanoseconds" << endl;
-
-        cout << "Please specify pattern to search for: ";
-        getline(std::cin, pattern);
-
-
-        /* Karp Rabin
-        cout << "Karp Rabin: ";
-        cout << "Number of occurrences in the text is: " << xxxx << " - ";
-        cout << "Number of Comparisons: " << xxxx << " - ";
-        cout << "Time: " << xxxx << "milliseconds" << " - ";
-        cout << "Number of spurious hits: " << xxxx << endl;
-
-        // Horspool
-        cout << "Horspool: ";
-        cout << "Number of occurrences in the text is: " << xxxx << " - ";
-        cout << "Number of Comparisons: " << xxxx << " - ";
-        cout << "Time: " << xxxx << "milliseconds" << " - ";
-
-        // KMP
-        cout << "KMP: ";
-        cout << "Number of occurrences in the text is: " << xxxx << " - ";
-        cout << "Number of Comparisons: " << xxxx << " - ";
-        cout << "Time: " << xxxx << "milliseconds" << " - ";
-
-
-        */
-
-        cout << "Press S to search for another word, or Q to quit: ";
-        getline(std::cin, command);
-
-        if (command == "Q"){
-        cout << "Goodbye.";
-        return 0;
-        }
-    }
-
-    return 0;
-}
-=======
-
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <chrono>
-
-using namespace std;
-using namespace std::chrono; 
-
-ifstream file;
 string command, filename, pattern, file_contents;
 
 void KMP(const char* file_contents, const char* pattern, int m, int n);
@@ -122,6 +48,7 @@ int main() {
         cout << "Time: " << xxxx << "milliseconds" << " - ";
         cout << "Number of spurious hits: " << xxxx << endl;
         // Horspool
+
         cout << "Horspool: ";
         cout << "Number of occurrences in the text is: " << xxxx << " - ";
         cout << "Number of Comparisons: " << xxxx << " - ";
@@ -195,5 +122,56 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     cout << "Number of Comparisons: " << kmpcomparisons << " - ";
     cout << "Time: " << t1.count() << "milliseconds" << " - ";
 }
+/*
+void Horspool(const char* file_contents, const char* pattern, int m, int n)
+{
+    
 
->>>>>>> Stashed changes
+ 
+     Fill the bad character array by calling
+    the preprocessing function badCharHeuristic()
+    for given pattern 
+    
+ 
+    int s = 0; // s is shift of the pattern with
+                // respect to text
+    while(s <= (n - m))
+    {
+        int j = m - 1;
+ 
+        /* Keep reducing index j of pattern while
+        characters of pattern and text are
+        matching at this shift s 
+        while(j >= 0 && pat[j] == txt[s + j])
+            j--;
+ 
+        /* If the pattern is present at current
+        shift, then index j will become -1 after
+        the above loop
+        if (j < 0)
+        {
+            cout << "pattern occurs at shift = " <<  s << endl;
+ 
+            /* Shift the pattern so that the next
+            character in text aligns with the last
+            occurrence of it in pattern.
+            The condition s+m < n is necessary for
+            the case when pattern occurs at the end
+            of text 
+            s += (s + m < n)? m-badchar[txt[s + m]] : 1;
+ 
+        }
+ 
+        else
+            /* Shift the pattern so that the bad character
+            in text aligns with the last occurrence of
+            it in pattern. The max function is used to
+            make sure that we get a positive shift.
+            We may get a negative shift if the last
+            occurrence of bad character in pattern
+            is on the right side of the current
+            character. 
+            s += max(1, j - badchar[txt[s + j]]);
+    }
+}
+*/
