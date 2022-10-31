@@ -13,6 +13,7 @@ string command, filename, pattern, file_contents;
 
 void KMP(const char* file_contents, const char* pattern, int m, int n);
 void Karp_Rabin(string& file_contents, string& pattern);
+void Horspool(string& file_contents, string& pattern);
 
 int main() {
 
@@ -44,14 +45,9 @@ int main() {
         int n = pattern.length();
         
         Karp_Rabin(file_contents, pattern);
-        /*
-        cout << "Horspool: ";
-        cout << "Number of occurrences in the text is: " << xxxx << " - ";
-        cout << "Number of Comparisons: " << xxxx << " - ";
-        cout << "Time: " << xxxx << "milliseconds" << " - ";
-        */
+        Horspool(file_contents, pattern);
         KMP(fileCstr, patternCstr, m, n);
-        // KMP
+        
         
         
 
@@ -167,4 +163,47 @@ void Karp_Rabin(string& file_contents, string& pattern){
     cout << "Number of Comparisons: " << krcomparisons << " - " << endl;
     cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
     cout << "Number of spurious hits: " << krspurious_hits << endl;
+}
+
+void Horspool(string& file_contents, string& pattern){
+    int p = pattern.length();
+    int t = file_contents.length();
+    int table[128];
+    int hmatches = 0;
+    int hcomparisons = 0;
+
+    auto start = std::chrono::high_resolution_clock::now(); // time step 1; BEGIN
+    for (int i = 0; i < 128; i++)
+        table[i] = p;
+
+    for (int j = 0; j < p -1; j++){
+        table[int(pattern[j])] = p-j-1;
+    }
+
+    int k = p-1;
+
+    while(k < t){
+        int j = p-1;
+        int i = k;
+        hcomparisons++;
+
+        while((j >= 0) && (file_contents[i] == pattern[j])){
+            j--;
+            i--;
+            hmatches++;
+        }
+        if(j == -1){
+            i++;
+            break;
+        }
+        k += table[int(file_contents[k])];
+    }
+
+    auto diff = std::chrono::high_resolution_clock::now() - start; // time step 2; END
+    auto t1 = std::chrono::duration_cast<std::chrono::milliseconds>(diff); // time step 3; CALCULATE
+
+    cout << "Horspool: ";
+    cout << "Number of occurrences in the text is: " << hmatches << " - " << endl;
+    cout << "Number of Comparisons: " << hcomparisons << " - " << endl;
+    cout << "Time: " << t1.count() << " milliseconds" << endl;
 }
