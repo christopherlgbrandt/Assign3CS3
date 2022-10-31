@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -9,11 +8,9 @@ using namespace std;
 using namespace std::chrono; 
 
 ifstream file;
-
 string command, filename, pattern, file_contents;
 
 void KMP(const char* file_contents, const char* pattern, int m, int n);
-void Karp_Rabin(string& file_contents, string& pattern);
 
 int main() {
 
@@ -43,9 +40,13 @@ int main() {
         const char *patternCstr = pattern.c_str();
         int m = file_contents.length();
         int n = pattern.length();
-        
-        Karp_Rabin(file_contents, pattern);
-        /*
+        /* Karp Rabin
+        cout << "Karp Rabin: ";
+        cout << "Number of occurrences in the text is: " << xxxx << " - ";
+        cout << "Number of Comparisons: " << xxxx << " - ";
+        cout << "Time: " << xxxx << "milliseconds" << " - ";
+        cout << "Number of spurious hits: " << xxxx << endl;
+        // Horspool
         cout << "Horspool: ";
         cout << "Number of occurrences in the text is: " << xxxx << " - ";
         cout << "Number of Comparisons: " << xxxx << " - ";
@@ -115,57 +116,7 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     auto diff = std::chrono::high_resolution_clock::now() - start;
     auto t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
     cout << "KMP: ";
-    cout << "Number of occurrences in the text is: " << kmpmatches << " - " << endl;
-    cout << "Number of Comparisons: " << kmpcomparisons << " - " << endl;
-    cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
-}
-
-void Karp_Rabin(string& file_contents, string& pattern){
-    int m = pattern.length();
-    int n = file_contents.length();
-    int q = 128;
-    int x = 11;
-    int x_m = 1;
-    int hash_pattern = 0;
-    int hash_file_contents = 0;
-
-    int krmatches = 0;
-    int krcomparisons = 0;
-    int krspurious_hits = 0;    
-
-    auto start = std::chrono::high_resolution_clock::now(); // time step 1; BEGIN
-    for(int i = 0; i < m-1; ++i)
-        x_m = (x_m*x)%q;
-
-    for(int i = 0; i < m; ++i){
-        hash_pattern = (hash_pattern*x + pattern[i]) % q;
-        hash_file_contents = (hash_file_contents*x + file_contents[i]) % q;
-    }
-
-    for(int i = 0; i < n-m+1; ++i){
-        krcomparisons++;
-        if(hash_pattern == hash_file_contents){
-            for(int j = 0; j < m; ++j){
-                if(pattern[j] != file_contents[i+j]){
-                    break;
-                }
-                krmatches++;
-            }
-            krspurious_hits++;
-
-        }
-        if(i < n-m){
-            hash_file_contents = (x*(hash_file_contents - file_contents[i]*x_m) + file_contents[i+m]) % q;
-            if(hash_file_contents < 0)
-                hash_file_contents += q;
-        }
-    }
-    auto diff = std::chrono::high_resolution_clock::now() - start; // time step 2; END
-    auto t1 = std::chrono::duration_cast<std::chrono::milliseconds>(diff); // time step 3; CALCULATE
-
-    cout << "Karp Rabin: ";
-    cout << "Number of occurrences in the text is: " << krmatches << " - " << endl;
-    cout << "Number of Comparisons: " << krcomparisons << " - " << endl;
-    cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
-    cout << "Number of spurious hits: " << krspurious_hits << endl;
+    cout << "Number of occurrences in the text is: " << kmpmatches << " - ";
+    cout << "Number of Comparisons: " << kmpcomparisons << " - ";
+    cout << "Time: " << t1.count() << "milliseconds" << " - ";
 }
