@@ -12,8 +12,8 @@ ifstream file;
 string command, filename, pattern, file_contents;
 
 void KMP(const char* file_contents, const char* pattern, int m, int n);
-void Karp_Rabin(string& file_contents, string& pattern);
-void Horspool(string& file_contents, string& pattern);
+void Karp_Rabin(const char* file_contents, const char* pattern, int n, int m);
+void Horspool(const char* file_contents, const char* pattern, int n, int m);
 
 int main() {
 
@@ -44,8 +44,8 @@ int main() {
         int m = file_contents.length();
         int n = pattern.length();
         
-        Karp_Rabin(file_contents, pattern);
-        Horspool(file_contents, pattern);
+        Karp_Rabin(fileCstr, patternCstr, n, m);
+        Horspool(fileCstr, patternCstr, n, m);
         KMP(fileCstr, patternCstr, m, n);
         
         
@@ -115,9 +115,7 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
 }
 
-void Karp_Rabin(string& file_contents, string& pattern){
-    int m = pattern.length();
-    int n = file_contents.length();
+void Karp_Rabin(const char* file_contents, const char* pattern, int m, int n){
     int q = 128;
     int x = 11;
     int x_m = 1;
@@ -165,9 +163,9 @@ void Karp_Rabin(string& file_contents, string& pattern){
     cout << "Number of spurious hits: " << krspurious_hits << endl;
 }
 
-void Horspool(string& file_contents, string& pattern){
-    int p = pattern.length();
-    int t = file_contents.length();
+void Horspool(const char* file_contents, const char* pattern, int n, int m){
+    int p = n;
+    int t = m;
     int table[128];
     int hmatches = 0;
     int hcomparisons = 0;
