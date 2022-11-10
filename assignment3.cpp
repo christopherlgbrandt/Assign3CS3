@@ -38,7 +38,7 @@ int main() {
         cout << "Text read! Time to read: " << t1.count()  << " nanoseconds" << endl;
 
         cout << "Please specify pattern to search for: ";
-        getline(std::cin, pattern);
+        getline(cin, pattern);
         const char *fileCstr = file_contents.c_str();
         const char *patternCstr = pattern.c_str();
         int m = file_contents.length();
@@ -52,7 +52,7 @@ int main() {
         
 
         cout << "Press S to search for another word, or Q to quit: ";
-        getline(std::cin, command);
+        getline(cin, command);
 
         if (command == "Q"){
         cout << "Goodbye.";
