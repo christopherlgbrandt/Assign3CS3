@@ -18,12 +18,12 @@ void Horspool(const char* file_contents, const char* pattern, int n, int m);
 int main() {
 
     cout << "Press S for search or Q for quit" << endl;
-    getline(std::cin, command);
+    getline(cin, command);
 
     while (command == "S"){
 
         cout << "Please specify input text file name: ";
-        getline(std::cin, filename);
+        getline(cin, filename);
 
         // read the file and time it
         auto start = std::chrono::high_resolution_clock::now();
