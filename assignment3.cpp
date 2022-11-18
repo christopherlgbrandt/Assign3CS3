@@ -52,7 +52,7 @@ int main() {
 
         cout << "Please specify pattern to search for: ";
         getline(cin, pattern);
-        const char *fileCstr = file_contents.c_str();
+        
         const char *patternCstr = pattern.c_str();
         
         int n = pattern.length();
