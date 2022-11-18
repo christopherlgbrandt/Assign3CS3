@@ -7,13 +7,13 @@
 using namespace std;
 using namespace std::chrono; 
 
+ifstream file;
 
-
-string command, filename, pattern;
+string command, filename, pattern, file_contents;
 
 void KMP(const char* file_contents, const char* pattern, int m, int n);
-void Karp_Rabin(const char* file_contents, const char* pattern, int n, int m);
-void Horspool(const char* file_contents, const char* pattern, int n, int m);
+void Karp_Rabin(string& file_contents, string& pattern);
+void Horspool(const char* file_contents, const char* pattern, int m, int n);
 
 int main() {
 
@@ -27,39 +27,26 @@ int main() {
 
         // read the file and time it
         auto start = std::chrono::high_resolution_clock::now();
-        ifstream fin;
-        int file_length= 0;
-        char *file_contents;
-        fin.open(filename);
-        if (!fin.good())
-        {
-            cout << "Error opening file." << endl;
-            return -1;
+        file.open(filename);
+        if (file.is_open()){
+            stringstream buffer;
+            buffer << file.rdbuf();
+            file_contents = buffer.str();
         }
-        fin.seekg(0, ios::end);
-        file_length = fin.tellg();
-        //getting file length
-        //char *buffer = new(nothrow) char[file_length]; 
-        //buffer = NULL;
-        file_contents = (char *)malloc(file_length+1);
-        fin.seekg(0, ios::beg);
-        //reset to beginning of file to begin file read
-        fin.read(file_contents, file_length);
-        fin.close();
         auto diff = std::chrono::high_resolution_clock::now() - start;
         auto t1 = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
         cout << "Text read! Time to read: " << t1.count()  << " nanoseconds" << endl;
 
         cout << "Please specify pattern to search for: ";
         getline(std::cin, pattern);
-        
+        const char *fileCstr = file_contents.c_str();
         const char *patternCstr = pattern.c_str();
-        
+        int m = file_contents.length();
         int n = pattern.length();
         
-        Karp_Rabin(file_contents, patternCstr, n, file_length);
-        Horspool(file_contents, patternCstr, n, file_length);
-        KMP(file_contents, patternCstr, file_length, n);
+        Karp_Rabin(file_contents, pattern);
+        Horspool(fileCstr, patternCstr, m, n);
+        KMP(fileCstr, patternCstr, m, n);
         
         
         
@@ -128,7 +115,9 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
 }
 
-void Karp_Rabin(const char* file_contents, const char* pattern, int m, int n){
+void Karp_Rabin(string& file_contents, string& pattern){
+    int m = pattern.length();
+    int n = file_contents.length();
     int q = 128;
     int x = 11;
     int x_m = 1;
@@ -175,20 +164,21 @@ void Karp_Rabin(const char* file_contents, const char* pattern, int m, int n){
     cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
     cout << "Number of spurious hits: " << krspurious_hits << endl;
 }
-
-void Horspool(const char* file_contents, const char* pattern, int n, int m){
-    int p = n;
-    int t = m;
-    int table[n+1];
+/*
+void Horspool(string& file_contents, string& pattern){
+    int p = pattern.length();
+    int t = file_contents.length();
+    int table[128];
     int hmatches = 0;
     int hcomparisons = 0;
 
     auto start = std::chrono::high_resolution_clock::now(); // time step 1; BEGIN
-    for (int i = 0; i < n; i++)
-    {
-        table[i] = (n-i-1);
+    for (int i = 0; i < 128; i++)
+        table[i] = p;
+
+    for (int j = 0; j < p -1; j++){
+        table[int(pattern[j])] = p-j-1;
     }
-    table[n+1] = n;
 
     int k = p-1;
 
@@ -215,5 +205,47 @@ void Horspool(const char* file_contents, const char* pattern, int n, int m){
     cout << "Horspool: ";
     cout << "Number of occurrences in the text is: " << hmatches << " - " << endl;
     cout << "Number of Comparisons: " << hcomparisons << " - " << endl;
+    cout << "Time: " << t1.count() << " milliseconds" << endl;
+}
+*/
+void Horspool(const char* file_contents, const char* pattern, int n, int m){
+     int shiftTable[256];
+     int comparisons = 0;
+     int matches = 0;
+     int i;
+
+    auto start = std::chrono::high_resolution_clock::now(); // time step 1; BEGIN
+     for(i=0; i<256; i++){
+          shiftTable[i]=m;
+     }
+
+     for(i=0; i<m-1; i++){
+          shiftTable[pattern[i]]=m-1-i;
+     }
+
+     
+     i = m-1;
+
+     while(i < n-1){
+          int k = 0;
+
+          while((k <= m-1) && (pattern[m-1-k] == file_contents[i-k])){
+               k++;
+               comparisons++;
+          }
+          if(k==m){
+               matches++;
+               continue;
+          }
+          else {
+               i=i+shiftTable[file_contents[i]];
+               i++
+          }
+     }
+    auto diff = std::chrono::high_resolution_clock::now() - start; // time step 2; END
+    auto t1 = std::chrono::duration_cast<std::chrono::milliseconds>(diff); // time step 3; CALCULATE
+    cout << "Horspool: ";
+    cout << "Number of occurrences in the text is: " << matches << " - " << endl;
+    cout << "Number of Comparisons: " << comparisons << " - " << endl;
     cout << "Time: " << t1.count() << " milliseconds" << endl;
 }
