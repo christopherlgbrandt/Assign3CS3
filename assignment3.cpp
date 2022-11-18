@@ -18,12 +18,12 @@ void Horspool(const char* file_contents, const char* pattern, int n, int m);
 int main() {
 
     cout << "Press S for search or Q for quit" << endl;
-    getline(std::cin, command);
+    getline(cin, command);
 
     while (command == "S"){
 
         cout << "Please specify input text file name: ";
-        getline(std::cin, filename);
+        getline(cin, filename);
 
         // read the file and time it
         auto start = std::chrono::high_resolution_clock::now();
@@ -51,8 +51,8 @@ int main() {
         cout << "Text read! Time to read: " << t1.count()  << " nanoseconds" << endl;
 
         cout << "Please specify pattern to search for: ";
-        getline(std::cin, pattern);
-        
+        getline(cin, pattern);
+        const char *fileCstr = file_contents.c_str();
         const char *patternCstr = pattern.c_str();
         
         int n = pattern.length();
@@ -65,7 +65,7 @@ int main() {
         
 
         cout << "Press S to search for another word, or Q to quit: ";
-        getline(std::cin, command);
+        getline(cin, command);
 
         if (command == "Q"){
         cout << "Goodbye.";
