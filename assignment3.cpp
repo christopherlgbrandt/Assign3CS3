@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -11,9 +12,9 @@ using namespace std::chrono;
 
 string command, filename, pattern;
 
-void KMP(const char* file_contents, const char* pattern, int m, int n);
 void Karp_Rabin(const char* file_contents, const char* pattern, int n, int m);
 void Horspool(const char* file_contents, const char* pattern, int n, int m);
+void KMP(const char* file_contents, const char* pattern, int m, int n);
 
 int main() {
 
@@ -57,13 +58,11 @@ int main() {
         
         int n = pattern.length();
         
-        Karp_Rabin(file_contents, patternCstr, n, file_length);
-        Horspool(file_contents, patternCstr, n, file_length);
-        KMP(file_contents, patternCstr, file_length, n);
-        
-        
-        
+        KMP(file_contents, patternCstr, file_length, n); //3       
+        Karp_Rabin(file_contents, patternCstr, n, file_length); //1
+        Horspool(file_contents, patternCstr, n, file_length); //2
 
+    
         cout << "Press S to search for another word, or Q to quit: ";
         getline(cin, command);
 
@@ -76,11 +75,9 @@ int main() {
     return 0;
 }
 
-void KMP(const char* file_contents, const char* pattern, int m, int n)
-{
+void KMP(const char* file_contents, const char* pattern, int m, int n){
     int kmpmatches = 0;
     int kmpcomparisons = 0;
-    auto start = std::chrono::high_resolution_clock::now();
     if (*pattern == '\0' || n == 0) {
         printf("The pattern is null, or empty");
     }
@@ -88,13 +85,12 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     if (*file_contents == '\0' || n > m) {
         printf("The file is null, or the pattern is a larger length then the text");
     }
- 
     int next[n + 1];
- 
     for (int i = 0; i < n + 1; i++) {
         next[i] = 0;
     }
- 
+
+    auto start = std::chrono::high_resolution_clock::now();
     for (int i = 1; i < n; i++)
     {
         int j = next[i + 1];
@@ -110,9 +106,11 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     for (int i = 0, j = 0; i < m; i++)
     {
         kmpcomparisons++;
-        if (*(file_contents + i) == *(pattern + j))
+        if (file_contents[i] == pattern[j])
         {
-            kmpmatches++;
+            if(++j == n){
+                kmpmatches++;
+            }
         }
         else if (j > 0)
         {
@@ -125,7 +123,7 @@ void KMP(const char* file_contents, const char* pattern, int m, int n)
     cout << "KMP: ";
     cout << "Number of occurrences in the text is: " << kmpmatches << " - " << endl;
     cout << "Number of Comparisons: " << kmpcomparisons << " - " << endl;
-    cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
+    cout << "Time: " << t1.count() << " milliseconds" << " - " << "\n" << endl;
 }
 
 void Karp_Rabin(const char* file_contents, const char* pattern, int m, int n){
@@ -169,11 +167,11 @@ void Karp_Rabin(const char* file_contents, const char* pattern, int m, int n){
     auto diff = std::chrono::high_resolution_clock::now() - start; // time step 2; END
     auto t1 = std::chrono::duration_cast<std::chrono::milliseconds>(diff); // time step 3; CALCULATE
 
-    cout << "Karp Rabin: ";
+    cout << "\nKarp Rabin: ";
     cout << "Number of occurrences in the text is: " << krmatches << " - " << endl;
     cout << "Number of Comparisons: " << krcomparisons << " - " << endl;
     cout << "Time: " << t1.count() << " milliseconds" << " - " << endl;
-    cout << "Number of spurious hits: " << krspurious_hits << endl;
+    cout << "Number of spurious hits: " << krspurious_hits << "\n" << endl;
 }
 
 void Horspool(const char* file_contents, const char* pattern, int n, int m){
@@ -191,12 +189,10 @@ void Horspool(const char* file_contents, const char* pattern, int n, int m){
     table[n+1] = n;
 
     int k = p-1;
-
+    int j = p-1;
+    int i = k;
     while(k < t){
-        int j = p-1;
-        int i = k;
         hcomparisons++;
-
         while((j >= 0) && (file_contents[i] == pattern[j])){
             j--;
             i--;
@@ -215,5 +211,5 @@ void Horspool(const char* file_contents, const char* pattern, int n, int m){
     cout << "Horspool: ";
     cout << "Number of occurrences in the text is: " << hmatches << " - " << endl;
     cout << "Number of Comparisons: " << hcomparisons << " - " << endl;
-    cout << "Time: " << t1.count() << " milliseconds" << endl;
+    cout << "Time: " << t1.count() << " milliseconds" << "\n" << endl;
 }
